@@ -1,0 +1,43 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<train_configs version = "1">
+	<train_config
+		name = "freight_config0"
+		populate_train_dist = "60.0"
+		announce_stations = "false"
+		doors_beep = "false"
+		carriages_hang = "false"
+		carriages_swing = "false"
+		link_tracks_with_adjacent_stations = "false"
+		no_random_spawn = "true"
+		carriage_gap = "-0.02">
+			
+            <carriage
+					model_name = "freight"
+					max_peds_per_carriage = "10"
+					flip_model_dir = "false"
+					do_interior_lights = "true"
+					carriage_vert_offset = "1.65"
+			repeat_count = "1" />
+
+            <carriage
+					model_name = "freight"
+					max_peds_per_carriage = "10"
+					flip_model_dir = "true"
+					do_interior_lights = "true"
+					carriage_vert_offset = "1.65"
+			repeat_count = "2" />
+
+            <carriage
+					model_name = "freightcont2"
+					max_peds_per_carriage = "10"
+					flip_model_dir = "true"
+					do_interior_lights = "true"
+					carriage_vert_offset = "0.65"
+			repeat_count = "50" />
+	</train_config>
+
+	<train_config_group name = "freight_group">
+		<train_config_ref name = "freight_config0" />
+	</train_config_group>
+</train_configs>
