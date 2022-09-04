@@ -1,7 +1,7 @@
 Tr = {Train = {}}
 TriggerServerEvent("plouffe_trainrobbery:sendConfig")
-
-RegisterNetEvent("plouffe_trainrobbery:getConfig",function(list)
+local cookie
+cookie = RegisterNetEvent("plouffe_trainrobbery:getConfig",function(list)
 	if not list then
 		while true do
 			Tr = nil
@@ -12,5 +12,7 @@ RegisterNetEvent("plouffe_trainrobbery:getConfig",function(list)
 		end
 
 		Tr:Start()
+
+		RemoveEventHandler(cookie)
 	end
 end)
