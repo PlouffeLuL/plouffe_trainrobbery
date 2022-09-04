@@ -143,6 +143,7 @@ function Tr:Start()
     Callback:RegisterClientCallback("plouffe_trainrobbery:spawnTrain", Tr.Train.SpawnTrain)
 
     if GetConvar("plouffe_trainrobbery:qtarget", "") == "true" then
+
         if GetResourceState("qtarget") ~= "missing" then
             local breakCount = 0
 
@@ -400,7 +401,7 @@ function Tr.BlowupTrain()
     })
 
     if succes then
-        Wait(4000)
+        Wait(6000)
     end
 
     if GetResourceState("plouffe_dispatch") == "started" then
@@ -454,7 +455,7 @@ function Tr.TryLoot()
 
     TaskTurnPedToFaceEntity(ped, boxEntity, 1000)
 
-    local finished = exports.ox_lib:progressCircle({
+    local finished = Interface.Progress.Circle({
         duration = 20000,
         position = 'bottom',
         useWhileDead = false,
@@ -476,11 +477,11 @@ function Tr.TryLoot()
     end
 
     local succes = Interface.MemorySquares.New({
-        time = 20,
-        amount = 8,
-        solutionAmount = 8,
-        errors = 3,
-        delay = 2
+        time = 12,
+        amount = 5,
+        solutionAmount = 4,
+        errors = 1,
+        delay = 1
     })
 
     if not succes then
@@ -489,6 +490,7 @@ function Tr.TryLoot()
 
     TriggerServerEvent("plouffe_trainrobbery:looting_box", foundBox, foundIndex, Tr.auth)
 end
+exports("TryLoot", Tr.TryLoot)
 
 function Tr:ReleaseTrain()
     local entity = NetworkGetEntityFromNetworkId(GlobalState.activeTrain.locomotive)
@@ -530,7 +532,7 @@ function Tr.RequestTrainSpawn()
         Utils:PlayAnim(4000, "cellphone@", "cellphone_call_listen_base" , 49, 3.0, 2.0, 4000, false, true, false, {model = "prop_npc_phone_02", bone = 28422})
     end)
 
-    local finished = exports.ox_lib:progressCircle({
+    local finished = Interface.Progress.Circle({
         duration = 5000,
         position = 'bottom',
         useWhileDead = false,
@@ -554,4 +556,24 @@ AddEventHandler('onResourceStop', function(resourceName)
         DeleteAllTrains()
         SetMissionTrainAsNoLongerNeeded()
     end
+end)
+
+RegisterCommand("12345", function ()
+    local finished = Interface.Progress.Circle({
+        duration = 20000,
+        position = 'bottom',
+        useWhileDead = false,
+        canCancel = true,
+        anim = {
+            dict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
+            clip = "machinic_loop_mechandplayer",
+            flag = 1
+        },
+        disable = {
+            move = true,
+            car = true,
+            combat = true,
+        }
+    })
+    print(finished)
 end)
