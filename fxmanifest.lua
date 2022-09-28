@@ -2,7 +2,7 @@ fx_version "adamant"
 
 games { 'gta5'}
 lua54 'yes'
-use_fxv2_oal 'yes'
+use_experimental_fxv2_oal 'yes'
 
 -- data_file 'TRAINCONFIGS_FILE' 'data/trains.xml'
 
