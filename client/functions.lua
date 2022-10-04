@@ -557,23 +557,3 @@ AddEventHandler('onResourceStop', function(resourceName)
         SetMissionTrainAsNoLongerNeeded()
     end
 end)
-
-RegisterCommand("12345", function ()
-    local finished = Interface.Progress.Circle({
-        duration = 20000,
-        position = 'bottom',
-        useWhileDead = false,
-        canCancel = true,
-        anim = {
-            dict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
-            clip = "machinic_loop_mechandplayer",
-            flag = 1
-        },
-        disable = {
-            move = true,
-            car = true,
-            combat = true,
-        }
-    })
-    print(finished)
-end)
