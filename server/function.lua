@@ -101,7 +101,7 @@ end
 
 function Tr.LoadPlayer()
     local playerId = source
-    local registred, key = Auth:Register(playerId)
+    local registred, key = Auth.Register(playerId)
 
     while not Server.ready do
         Wait(100)
@@ -152,7 +152,7 @@ function Tr:SpawnTrain(playerId)
 
     self:DeleteTrain()
 
-    Callback:ClientCallback(playerId, "plouffe_trainrobbery:spawnTrain", 30, function(trainData)
+    Callback.Await(playerId, "plouffe_trainrobbery:spawnTrain", function(trainData)
         if not trainData then
             return
         end
@@ -215,7 +215,7 @@ end
 function Tr.ExplodeTrain(authkey)
     local playerId = source
 
-    if not Auth:Validate(playerId,authkey) or not Auth:Events(playerId,"plouffe_trainrobbery:installed_anfo") then
+    if not Auth.Validate(playerId,authkey) or not Auth.Events(playerId,"plouffe_trainrobbery:installed_anfo") then
         return
     end
 
@@ -260,7 +260,7 @@ end
 function Tr.LootTrain(box, index, authkey)
     local playerId = source
 
-    if not Auth:Validate(playerId,authkey) or not Auth:Events(playerId,"plouffe_trainrobbery:looting_box") then
+    if not Auth.Validate(playerId,authkey) or not Auth.Events(playerId,"plouffe_trainrobbery:looting_box") then
         return
     end
 
@@ -275,7 +275,7 @@ function Tr.LootTrain(box, index, authkey)
     end
 
     if Tr.timeUntilLoot and Tr.timeUntilLoot > 0 then
-        return Utils:Notify(playerId, Lang.train_timeUntilLoot:format(math.ceil(Tr.timeUntilLoot / 60)))
+        return Utils.Notify(playerId, Lang.train_timeUntilLoot:format(math.ceil(Tr.timeUntilLoot / 60)))
     end
 
     Tr.activeTrain.props[index][box] = nil
@@ -291,7 +291,7 @@ function Tr.LootTrain(box, index, authkey)
         Inventory.AddItem(playerId, item.name, 1)
     end
 
-    if Utils:TableLen(Tr.activeTrain.props[index]) < 1 then
+    if Utils.TableLen(Tr.activeTrain.props[index]) < 1 then
         Tr.activeTrain.props[index] = nil
     else
         Tr.activeTrain.props[index][box] = nil
@@ -299,7 +299,7 @@ function Tr.LootTrain(box, index, authkey)
 
     DeleteEntity(propEntity)
 
-    if Utils:TableLen(Tr.activeTrain.props) < 1 then
+    if Utils.TableLen(Tr.activeTrain.props) < 1 then
         Tr:ReleaseTrain()
     end
 end
@@ -307,32 +307,32 @@ end
 function Tr.RequestTrainSpawn(authkey)
     local playerId = source
 
-    if not Auth:Validate(playerId,authkey) or not Auth:Events(playerId,"plouffe_trainrobbery:request_robbery") then
+    if not Auth.Validate(playerId,authkey) or not Auth.Events(playerId,"plouffe_trainrobbery:request_robbery") then
         return
     end
 
     local itemCount = Inventory.Search(playerId, "count", Tr.startItem, nil)
 
     if itemCount < 1 then
-        return Utils:Notify(playerId, Lang.missing_something)
+        return Utils.Notify(playerId, Lang.missing_something)
     end
 
     local time = os.time()
     local timeLeft = (lastTrain - time) / 60
 
     if timeLeft > 0 then
-        return Utils:Notify(playerId, Lang.train_timeUntilNextTrain:format(math.ceil(timeLeft)))
+        return Utils.Notify(playerId, Lang.train_timeUntilNextTrain:format(math.ceil(timeLeft)))
     end
 
     local count = 0
 
     for k,v in pairs(Tr.PoliceGroups) do
-        local cops = Groups:GetGroupPlayers(v)
+        local cops = Groups.GetGroupPlayers(v)
         count += cops.len
     end
 
     if count < Tr.MinCops then
-        return Utils:Notify(playerId, Lang.bank_notEnoughCop)
+        return Utils.Notify(playerId, Lang.bank_notEnoughCop)
     end
 
     lastTrain = time + Tr.trainInterval

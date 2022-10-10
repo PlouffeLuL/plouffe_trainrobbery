@@ -140,7 +140,7 @@ function Tr:Start()
     self:ExportAllZones()
     self:RegisterEvents()
 
-    Callback:RegisterClientCallback("plouffe_trainrobbery:spawnTrain", Tr.Train.SpawnTrain)
+    Callback.Register("plouffe_trainrobbery:spawnTrain", Tr.Train.SpawnTrain)
 
     if GetConvar("plouffe_trainrobbery:qtarget", "") == "true" then
 
@@ -183,7 +183,7 @@ function Tr:ExportAllZones()
 end
 
 function Tr:RegisterEvents()
-    Utils:RegisterNetEvent("plouffe_trainrobbery:release_train", function()
+    Utils.RegisterNetEvent("plouffe_trainrobbery:release_train", function()
         self:ReleaseTrain()
     end)
 
@@ -212,7 +212,7 @@ function Tr.Train.SpawnTrain(cb,data)
     local coords = data.coords
 
     for k,v in pairs(trainModels) do
-        Utils:AssureModel(v)
+        Utils.AssureModel(v)
     end
 
     local train = CreateMissionTrain(4, coords.x, coords.y, coords.z, true)
@@ -253,7 +253,7 @@ function Tr.Train.SpawnTrain(cb,data)
                         Wait(250)
 
                         local init = GetGameTimer()
-                        local entity = Utils:CreateProp(v.model,coords,0.0,true,false)
+                        local entity = Utils.CreateProp(v.model,coords,0.0,true,false)
 
                         while not DoesEntityExist(NetworkGetEntityFromNetworkId(NetworkGetNetworkIdFromEntity(entity))) and GetGameTimer() - init < 2000 do
                             Wait(0)
@@ -271,7 +271,7 @@ function Tr.Train.SpawnTrain(cb,data)
         end
     end
 
-    cb(data)
+    return data
 end
 
 function Tr.Train:ChangeSpeed(speed, train)
@@ -315,12 +315,12 @@ function Tr.PtfxExplosion()
         SetTrainCruiseSpeed(train, 0.0)
     end)
 
-    Utils:AssureFxAsset("scr_ornate_heist")
+    Utils.AssureFxAsset("scr_ornate_heist")
 
     UseParticleFxAssetNextCall('scr_ornate_heist')
     local ptfx = StartNetworkedParticleFxLoopedOnEntity('scr_heist_ornate_thermal_burn', train, 0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 2.0, false, false, false, 0)
 
-    Utils:AssureFxAsset("core",true)
+    Utils.AssureFxAsset("core",true)
 
     local nextPtfx = 10
 
@@ -348,7 +348,7 @@ function Tr.BlowupTrain()
         return
     end
 
-    if Utils:GetItemCount(Tr.bombItem) < 1 then
+    if Utils.GetItemCount(Tr.bombItem) < 1 then
         return Interface.Notifications.Show({
             style = "error",
             header = "Train robbery",
@@ -381,12 +381,12 @@ function Tr.BlowupTrain()
     local coords = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 0.8, -0.6)
 
     CreateThread(function()
-        Utils:PlayAnim(6000, "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer" , 1, 3.0, 2.0, 6000, false, true, true, {model = "hei_prop_heist_thermite", bone = 28422} )
+        Utils.PlayAnim(6000, "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer" , 1, 3.0, 2.0, 6000, false, true, true, {model = "hei_prop_heist_thermite", bone = 28422} )
     end)
 
 
-    local entity = Utils:CreateProp("hei_prop_heist_thermite",coords,0.0,true,false)
-    Utils:AssureFxAsset("scr_ornate_heist")
+    local entity = Utils.CreateProp("hei_prop_heist_thermite",coords,0.0,true,false)
+    Utils.AssureFxAsset("scr_ornate_heist")
 
     AttachEntityToEntity(entity, train, 0, 0.0, -1.15, 3.075, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
     UseParticleFxAssetNextCall('scr_ornate_heist')
@@ -495,14 +495,14 @@ exports("TryLoot", Tr.TryLoot)
 function Tr:ReleaseTrain()
     local entity = NetworkGetEntityFromNetworkId(GlobalState.activeTrain.locomotive)
 
-    Utils:AssureEntityControl(entity)
+    Utils.AssureEntityControl(entity)
     SetMissionTrainAsNoLongerNeeded()
     SetEntityAsNoLongerNeeded(entity)
     SetEntityCleanupByEngine(entity, true)
 
     for k,v in pairs(GlobalState.activeTrain.carriage) do
         entity = NetworkGetEntityFromNetworkId(v)
-        Utils:AssureEntityControl(entity)
+        Utils.AssureEntityControl(entity)
         SetEntityAsNoLongerNeeded(entity)
         SetEntityCleanupByEngine(entity, true)
     end
@@ -511,7 +511,7 @@ function Tr:ReleaseTrain()
         for x,y in pairs(v) do
             entity = NetworkGetEntityFromNetworkId(y)
             if DoesEntityExist(entity) then
-                Utils:AssureEntityControl(entity)
+                Utils.AssureEntityControl(entity)
                 SetEntityAsNoLongerNeeded(entity)
                 SetEntityCleanupByEngine(entity, true)
             end
@@ -520,7 +520,7 @@ function Tr:ReleaseTrain()
 end
 
 function Tr.RequestTrainSpawn()
-    if Utils:GetItemCount(Tr.startItem) < 1 then
+    if Utils.GetItemCount(Tr.startItem) < 1 then
         return Interface.Notifications.Show({
             style = "error",
             header = "Train robbery",
@@ -529,7 +529,7 @@ function Tr.RequestTrainSpawn()
     end
 
     CreateThread(function()
-        Utils:PlayAnim(4000, "cellphone@", "cellphone_call_listen_base" , 49, 3.0, 2.0, 4000, false, true, false, {model = "prop_npc_phone_02", bone = 28422})
+        Utils.PlayAnim(4000, "cellphone@", "cellphone_call_listen_base" , 49, 3.0, 2.0, 4000, false, true, false, {model = "prop_npc_phone_02", bone = 28422})
     end)
 
     local finished = Interface.Progress.Circle({
