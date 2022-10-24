@@ -4,11 +4,9 @@ games { 'gta5'}
 lua54 'yes'
 use_experimental_fxv2_oal 'yes'
 
--- data_file 'TRAINCONFIGS_FILE' 'data/trains.xml'
-
--- files {
--- 	'data/trains.xml',
--- }
+author 'PlouffeLuL'
+description 'Train heist'
+version '1.0.0'
 
 client_scripts {
 	'configs/clientConfig.lua',
